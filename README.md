@@ -123,6 +123,5 @@ In practice, a combination of all the strategies is the best compromise. Use the
 
 The recommended order from the most robust to the least robust:
 
-- Textual accessibility locators
-- Keyboard navigation
-- Image locators and OCR locators
+- Textual accessibility locators and keyboard navigation
+- Image and OCR locators
