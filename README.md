@@ -17,7 +17,13 @@ The image locator strategy is based on taking screenshots of the user interface 
 
 ### Example
 
-Image locators require are screenshot of an element or any section of the screen. For example, this `Run a Command...` widget on [VS Code](https://code.visualstudio.com/) welcome screen:
+This animation displays a robot using [VS Code](https://code.visualstudio.com/) (with [Robocorp extensions](https://robocorp.com/docs/developer-tools/visual-studio-code/overview)), image locators, and OCR to create and run a new robot(!):
+
+![Robot using VS Code, image locators, and OCR to create new robots](vs-code-robot-video.gif)
+
+> This robot really exists! You can view the robot code at [https://github.com/robocorp/example-vs-code-robot](https://github.com/robocorp/example-vs-code-robot).
+
+Image locators require a screenshot of an element or any section of the screen. For example, this `Run a Command...` widget on [VS Code](https://code.visualstudio.com/) welcome screen:
 
 ![Run a Command widget on VS Code welcome screen](RunCommand.png)
 
@@ -84,7 +90,7 @@ OCR locators work by extracting and matching text on the screen. The locator can
 
 ### Example
 
-This keyword uses OCR (to read text from the screen) to determine when a slow action has completed. After executing the robot creation command on the VS Code UI, the robot waits for the environment update notification (`Update env`) to appear and then disappear to indicate the completion of the action:
+This keyword uses OCR (to read text from the screen) to determine when a slow action has been completed. After executing the robot creation command on the VS Code UI, the robot waits for the environment update notification (`Update env`) to appear and then disappear to indicate the completion of the action:
 
 ```robot
 Create robot
