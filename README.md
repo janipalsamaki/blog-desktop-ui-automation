@@ -120,8 +120,3 @@ Some Windows applications can be automated by targeting the actual UI elements w
 ## Which strategy to choose?
 
 In practice, a combination of all the strategies is the best compromise. Use the strengths, be mindful of the weaknesses, and combine all the strategies to build a robot that does what it's supposed to do and is quite resilient against moderate changes in the UI.
-
-The recommended order from the most robust to the least robust:
-
-- Textual accessibility locators and keyboard navigation
-- Image and OCR locators
