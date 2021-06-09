@@ -1,10 +1,10 @@
-# How to avoid brittle desktop UI automation? What are the best practices?
+# How to automate a desktop application? What automation strategies are available?
 
-Desktop automation imitates a human operator controlling a desktop interface. This includes opening and closing applications, simulating mouse movements and clicks, triggering keyboard keys and shortcuts, and taking screenshots.
+> How to automate a desktop application? What automation strategies are available? What are the strengths and the weaknesses of the different strategies? Are there best practices?
 
-How to automate a desktop application? What automation strategies are available? What are the strengths and the weaknesses of the different strategies? Are there best practices?
+Desktop automation imitates a human operator controlling a desktop interface. This includes opening and closing applications, simulating mouse movements and clicks, plus triggering keyboard keys and shortcuts.
 
-Let's go through the following options:
+Let's look at the following options:
 
 - Image locators
 - Keyboard navigation
@@ -13,13 +13,28 @@ Let's go through the following options:
 
 ## Image locators
 
-The image locator strategy is based on taking screenshots of the user interface elements. The robot uses those screenshots to find the elements on the screen. The robot is instructed what to do when an element is found or not found. The action could be clicking on the element when it appears or waiting for it to disappear before continuing.
+The image locator strategy is based on taking screenshots of the graphical user interface (GUI) elements. The robot uses those captured screenshots to find the elements on the screen. The robot is instructed what to do when an element is found or not found. The action could be, for example, clicking on the element when it appears or waiting for it to disappear before continuing.
 
-### Example
+### An image locator example
 
-This animation displays a robot using [VS Code](https://code.visualstudio.com/) (with [Robocorp extensions](https://robocorp.com/docs/developer-tools/visual-studio-code/overview)), image locators, and OCR to create and run a new robot(!):
+The following animation displays a robot using [VS Code](https://code.visualstudio.com/) (with [Robocorp extensions](https://robocorp.com/docs/developer-tools/visual-studio-code/overview)) user interface, image locators, and OCR to create and run a new robot(!):
 
 ![Robot using VS Code, image locators, and OCR to create new robots](vs-code-robot-video.gif)
+
+This is what the robot task looks like in [Robot Framework](https://robocorp.com/docs/languages-and-frameworks/robot-framework/basics) syntax:
+
+```robot
+*** Tasks ***
+Create and run a robot using VS Code UI, image locators, and OCR
+    ${new_robot_dir}=    Create new robot dir
+    Open VS Code    ${new_robot_dir}
+    Open Command Palette
+    Create robot
+    Select standard template
+    Enter robot name
+    Open Command Palette
+    Run robot
+```
 
 > This robot really exists! You can view the robot code at [https://github.com/robocorp/example-vs-code-robot](https://github.com/robocorp/example-vs-code-robot).
 
