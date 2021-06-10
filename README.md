@@ -88,6 +88,14 @@ Open Command Palette
     Press Keys    ctrl    shift    p
 ```
 
+This keyword runs the robot by typing the run command and pressing `Enter`:
+
+```robot
+*** Keywords ***
+Run robot
+    Type and run    robocorp-run-robot
+```
+
 ### Strengths
 
 - Keyboard shortcuts change less often than visual user interfaces, making them more robust than image locators. Even if the screen resolution, colors, or fonts change, keyboard shortcuts usually stay the same.
