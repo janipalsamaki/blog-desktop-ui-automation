@@ -1,15 +1,15 @@
 # How to automate a desktop application? What automation strategies are available?
 
-> How to automate a desktop application? What automation strategies are available? What are the strengths and the weaknesses of the different strategies? Are there best practices?
+> What are the strengths and the weaknesses of the different strategies? Are there best practices?
 
 Desktop automation imitates a human operator controlling a desktop interface. This includes opening and closing applications, simulating mouse movements and clicks, plus triggering keyboard keys and shortcuts.
 
-Let's look at the following options:
+Let's look at the following options for desktop automation:
 
-- Image locators
-- Keyboard navigation
-- OCR (optical character recognition)
-- Textual locators (Windows accessibility locators)
+- Image locators: Using screenshots to find elements
+- Keyboard navigation: Using key combinations, typing text
+- OCR (optical character recognition): Reading text from the screen
+- Textual locators: Accessing the elements by their accessibility names and other attributes
 
 ## Image locators
 
@@ -17,15 +17,15 @@ The image locator strategy is based on taking screenshots of the graphical user 
 
 ### An image locator example
 
-The following animation displays a robot using [VS Code](https://code.visualstudio.com/) (with [Robocorp extensions](https://robocorp.com/docs/developer-tools/visual-studio-code/overview)) user interface, image locators, and OCR to create and run a new robot(!):
+The following animation displays a robot using [VS Code](https://code.visualstudio.com/) (with [Robocorp extensions](https://robocorp.com/docs/developer-tools/visual-studio-code/overview)) user interface, image locators, keyboard, and OCR to create and run a new robot(!):
 
-![Robot using VS Code, image locators, and OCR to create new robots](vs-code-robot-video.gif)
+![Robot using VS Code, image locators, keyboard, and OCR to create new robots](vs-code-robot-video.gif)
 
 This is what the robot task looks like in [Robot Framework](https://robocorp.com/docs/languages-and-frameworks/robot-framework/basics) syntax:
 
 ```robot
 *** Tasks ***
-Create and run a robot using VS Code UI, image locators, and OCR
+Create and run a robot using VS Code, image locators, keyboard, and OCR
     ${new_robot_dir}=    Create new robot dir
     Open VS Code    ${new_robot_dir}
     Open Command Palette
@@ -38,11 +38,11 @@ Create and run a robot using VS Code UI, image locators, and OCR
 
 > This robot really exists! You can view the robot code at [https://github.com/robocorp/example-vs-code-robot](https://github.com/robocorp/example-vs-code-robot).
 
-Image locators require a screenshot of an element or any section of the screen. For example, this `Run a Command...` widget on [VS Code](https://code.visualstudio.com/) welcome screen:
+Image locators require a screenshot of an element or any section of the screen. For example, this `Run a Command...` widget on VS Code welcome screen:
 
 ![Run a Command widget on VS Code welcome screen](RunCommand.png)
 
-In addition to the screenshot, one can create a named locator for the image. The locator metadata is stored in JSON format. Using the `Run a Command...` screenshot as an example, the locator JSON might look like this:
+It is possible to give a name for the image locator. The locator metadata is stored in JSON format. Using the `Run a Command...` screenshot as an example, the JSON for a locator called `VSCode.RunCommand` looks like this:
 
 ```json
 {
@@ -54,7 +54,7 @@ In addition to the screenshot, one can create a named locator for the image. The
 }
 ```
 
-The robot code using the locator might look like this:
+The robot code using the `VSCode.RunCommand` locator looks like this:
 
 ```robot
 *** Keywords ***
@@ -66,19 +66,19 @@ Open Command Palette
 
 - Image locators can target any visual elements on all major platforms (Windows, Linux, macOS).
 - Image locators work without physical access to the application or the operating system (e.g., Citrix) as long as an image of the screen is available. The operating system or the application under automation does not matter.
-- Image locators help determine the completion of actions based on what is or is not on the screen: a button becomes visible, a progress bar disappears.
+- Image locators help determine the completion of actions based on what is or is not on the screen: a button becomes visible, a progress bar disappears, etc.
 
 ### Weaknesses
 
 - Image locators fail if the visuals change too much (layout, fonts, icons, colors, resolution).
-- Multiple screenshots of the same elements are needed if the locator needs to work with elements that have multiple states (e.g., active vs. inactive) since a different color or background color often conveys the element state.
+- Multiple screenshots of the same elements are needed if the locator needs to work with elements that have multiple states (e.g., an active button vs. an inactive button) since a different color or background color often conveys the element state.
 - The application state (and thus the GUI) might differ on application start requiring some robot logic for resetting a known start state.
 
 ## Keyboard navigation
 
-Opening windows and dialogs, executing tasks, and navigating can be done without a mouse if the application has good keyboard support (having access to all the core functionality with just the keyboard).
+Opening windows and dialogs, executing tasks, and navigating can be done without a mouse if the application provides access to all the core functionality using the keyboard.
 
-### Example
+### A keyboard navigation example
 
 This robot keyword uses a shortcut key combination (`Ctrl+Shift+P`) to open the VS Code Command Palette:
 
@@ -96,18 +96,19 @@ Open Command Palette
 ### Weaknesses
 
 - All applications do not have sufficient keyboard support.
-- Keyboard shortcuts are excellent for triggering actions, but there are no shortcuts for determining when it is safe to proceed after triggering an action that takes some time to complete.
+- Keyboard shortcuts are excellent for triggering actions, but there are no shortcuts for determining when a slow action has been completed.
 - Keyboard navigation needs to be used together with either image or OCR locators to assert the completion of slow operations.
 
 ## OCR
 
 OCR locators work by extracting and matching text on the screen. The locator can be written in plain text (e.g., "Submit"). The robot will find the text on the screen programmatically.
 
-### Example
+### An optical character recognition example
 
 This keyword uses OCR (to read text from the screen) to determine when a slow action has been completed. After executing the robot creation command on the VS Code UI, the robot waits for the environment update notification (`Update env`) to appear and then disappear to indicate the completion of the action:
 
 ```robot
+*** Keywords ***
 Create robot
     Type and run    robocorp-create-robot
     Wait for text    Update env
@@ -130,14 +131,25 @@ Some Windows applications can be automated by targeting the actual UI elements w
 
 ### Strengths
 
-- Accessibility locators are robust and resilient to visual changes. The identifiers stay the same across operating system versions.
-- Accessibility locators support waiting for the locators, making it possible to monitor the application's state to proceed when it's safe to do so.
+- Accessibility locators are resilient to visual changes. The identifiers usually stay the same across operating system versions.
 
 ### Weaknesses
 
 - Not all Windows applications can be inspected for accessibility locators.
 - If the application is accessed remotely using Citrix or a similar protocol, the accessibility identifiers are unavailable.
 
+## Best practices for desktop automation
+
+- Instead of waiting an exact amount of time between actions, utilize the intelligent waiting capabilities. Most of the locators support some sort of "wait for this element" functionality. Using the built-in waiting makes the robot wait for the elements just long enough before proceeding.
+
+- Prefer strategies that do not rely on the exact visual representation of the graphical user interface. Using keyboard shortcuts and accessibility locators might produce more robust automation compared to image locators and OCR.
+
+- If possible, try to run the desktop automation in an environment where you can make sure the application configuration and visuals remain unchanged.
+
 ## Which strategy to choose?
 
-In practice, a combination of all the strategies is the best compromise. Use the strengths, be mindful of the weaknesses, and combine all the strategies to build a robot that does what it's supposed to do and is quite resilient against moderate changes in the UI.
+In practice, a combination of multiple strategies is needed. Use the strengths, be mindful of the weaknesses, and combine the strategies to build a robot that does what it's supposed to do and is quite resilient against moderate changes in the UI.
+
+## Alternative strategies
+
+Robocorp is an open platform based on [Python](https://www.python.org/). This makes it possible to import and use the libraries you want or even implement your own. Out-of-the-box support is provided for all the automation strategies, but you are not limited to those. Use the power of the Python ecosystem!
