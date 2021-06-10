@@ -2,7 +2,7 @@
 
 > What are the strengths and the weaknesses of the different strategies? Are there best practices?
 
-Desktop automation imitates a human operator controlling a desktop interface. This includes opening and closing applications, simulating mouse movements and clicks, plus triggering keyboard keys and shortcuts.
+[Desktop automation](https://robocorp.com/docs/development-guide/desktop) imitates a human operator controlling a desktop interface. This includes opening and closing applications, simulating mouse movements and clicks, plus triggering keyboard keys and shortcuts.
 
 Let's look at the following options for desktop automation:
 
